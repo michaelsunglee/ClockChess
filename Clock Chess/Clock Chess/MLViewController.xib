@@ -52,15 +52,16 @@
                         </mask>
                     </variation>
                 </pickerView>
-                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="P1" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="DqG-gw-3RA">
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Player 1" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="DqG-gw-3RA">
                     <rect key="frame" x="0.0" y="355" width="600" height="245"/>
                     <color key="backgroundColor" cyan="0.0" magenta="0.060669798951048952" yellow="0.29843203671328672" black="0.0" alpha="1" colorSpace="custom" customColorSpace="genericCMYKColorSpace"/>
+                    <gestureRecognizers/>
                     <constraints>
                         <constraint firstAttribute="height" constant="50" id="VO8-g1-orz"/>
                         <constraint firstAttribute="height" constant="250" id="YoO-Q6-VOO"/>
                         <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="300" id="gQK-ap-BuM"/>
                     </constraints>
-                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                    <fontDescription key="fontDescription" name="Helvetica-Light" family="Helvetica" pointSize="78"/>
                     <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                     <nil key="highlightedColor"/>
                     <variation key="default">
@@ -70,14 +71,18 @@
                             <exclude reference="gQK-ap-BuM"/>
                         </mask>
                     </variation>
+                    <connections>
+                        <outletCollection property="gestureRecognizers" destination="v0e-dH-xO8" appends="YES" id="wIK-pb-Atv"/>
+                    </connections>
                 </label>
-                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="P2" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Uey-ZC-Und">
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Player 2" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Uey-ZC-Und">
                     <rect key="frame" x="0.0" y="0.0" width="600" height="245"/>
                     <color key="backgroundColor" white="0.41570148601398599" alpha="1" colorSpace="calibratedWhite"/>
+                    <gestureRecognizers/>
                     <constraints>
                         <constraint firstAttribute="height" constant="250" id="iDA-bX-stE"/>
                     </constraints>
-                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                    <fontDescription key="fontDescription" name="Helvetica-Light" family="Helvetica" pointSize="78"/>
                     <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                     <nil key="highlightedColor"/>
                     <variation key="default">
@@ -85,6 +90,9 @@
                             <exclude reference="iDA-bX-stE"/>
                         </mask>
                     </variation>
+                    <connections>
+                        <outletCollection property="gestureRecognizers" destination="UMg-1m-ICx" appends="YES" id="oXC-Mc-GOC"/>
+                    </connections>
                 </label>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="iFP-sP-tdg">
                     <rect key="frame" x="490" y="270" width="60" height="60"/>
@@ -179,6 +187,12 @@
             </variation>
             <point key="canvasLocation" x="381" y="328"/>
         </view>
+        <tapGestureRecognizer id="v0e-dH-xO8">
+            <connections>
+                <action selector="p1Touched:" destination="-1" id="tNp-rx-NIK"/>
+            </connections>
+        </tapGestureRecognizer>
+        <tapGestureRecognizer id="UMg-1m-ICx"/>
     </objects>
     <resources>
         <image name="clock2" width="128" height="128"/>

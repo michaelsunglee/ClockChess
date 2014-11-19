@@ -10,16 +10,21 @@
 #import "MLAppDelegate.h"
 #import <UIKit/UIKit.h>
 #import <Foundation/Foundation.h>
+#import <QuartzCore/QuartzCore.h>
 
 @interface MLViewController ()
 {
     NSArray *_timerData;
     NSNumber *timeRequested;
     NSInteger timeReq;
+    NSInteger p1TimeReq;
+    NSInteger p2TimeReq;
     NSInteger timeReqChosen;
     int startTime;
     int p1Minutes;
     int p1Seconds;
+    int p2Minutes;
+    int p2Seconds;
 }
 
 @property (nonatomic, strong) IBOutlet UIViewController *main;
@@ -30,8 +35,8 @@
 @end
 
 @implementation MLViewController
-@synthesize p1Timer;
-@synthesize p2Timer;
+//@synthesize p1Timer;
+//@synthesize p2Timer;
 @synthesize p1TimerLabel;
 @synthesize p2TimerLabel;
 @synthesize timerValue;
@@ -49,7 +54,8 @@
     _timerData = @[@"1", @"2", @"3", @"4", @"5", @"6", @"7", @"8", @"9", @"10", @"11", @"12",@"13",@"14",@"15",@"20", @"25", @"30"];
     self.tPicker.dataSource = self;
     self.tPicker.delegate = self;
-    
+    p2TimerLabel.layer.transform = CATransform3DMakeRotation(M_PI,0,0,1);
+   
 }
 
 -(void)didReceiveMemoryWarning
@@ -76,21 +82,33 @@
 -(void)action:SEL
 {
     NSLog(@"Done Button HIT!!!");
-    /*timeRequested = [self pickerView:self.tPicker
-                         titleForRow:[self pickerView :selectedRowInComponent:0]
-                       forCompoenent:0];*/
     timeReq = [tPicker selectedRowInComponent:0];
     
     ++timeReq;
     NSLog(@"Number chosen was %ld", (long)timeReq);
     timeReq = timeReq * 60;
-    timeReqChosen = timeReq;
+    p1TimeReq = timeReq;
+    p2TimeReq = timeReq;
     tPicker.hidden = YES;
     tBar.hidden = YES;
     p1TimerLabel.hidden = NO;
-    //p2TimerLabel.hidden = NO;
-    [self p1UpdateTimer:p1Timer];
+    p2TimerLabel.hidden = NO;
+    
+    p1TimerLabel.userInteractionEnabled = YES;
+    //UITapGestureRecognizer *p1LabelGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(p1LabelTouched)];
+    //[p1LabelGesture addGestureRecognizer:p1LabelGesture];
+    
+    p2TimerLabel.userInteractionEnabled = YES;
+    
+    NSTimer *p1Timer = [NSTimer scheduledTimerWithTimeInterval:1.0f target:self selector:@selector(p1UpdateTimer:) userInfo:nil repeats:YES];
+   // NSTimer *p2Timer = [NSTimer scheduledTimerWithTimeInterval:1.0f target:self selector:@selector(p2UpdateTimer:) userInfo:nil repeats:YES];
+
+    //change HERE
+    //[self  p1UpdateTimer:p1Timer];
+    //[self p2UpdateTimer:p2Timer];
+    
 }
+
 
 -(void)p1UpdateTimer:(NSTimer *)theP1Timer
 {
@@ -99,21 +117,29 @@
         --timeReq;
         p1Minutes = timeReq / 60;
         p1Seconds = timeReq % 60;
-        p1TimerLabel.text = [NSString stringWithFormat:@"%02d:%20d", p1Minutes, p1Seconds];
+        p1TimerLabel.text = [NSString stringWithFormat:@"%02d:%02d", p1Minutes, p1Seconds];
     }
     else
     {
-        p1TimerLabel.text = @"TIME'S UP";
+        p1TimerLabel.text = @"TIME UP";
+    }
+}
+
+-(void)p2UpdateTimer:(NSTimer *)theP2Timer
+{
+    if(timeReq > 0)
+    {
+        --timeReq;
+        p2Minutes = timeReq / 60;
+        p2Seconds = timeReq % 60;
+        p2TimerLabel.text = [NSString stringWithFormat:@"%02d:%02d", p2Minutes, p2Seconds];
     }
 }
 
 -(void)countdownTimer
 {
-    timeReq = 0;
-    if([p1Timer isValid])
-    {
-        p1Timer = [NSTimer scheduledTimerWithTimeInterval:1.0f target:self selector:@selector(p1UpdateTimer:) userInfo:nil repeats:YES];
-    }
+   // timeReq = 0;
+
 }
 
 -(instancetype)initWithNibName:(NSString *)nibNameOrNil
@@ -140,23 +166,23 @@
         p1TimerLabel.hidden = YES;
         //p2TimerLabel.hidden = YES;
         tBar.hidden = NO;
-        //[UIView beginAnimations:@"hideDatePicker" context:nil];
         [UIView setAnimationDuration:0.3];
         
 
         self.navigationItem.rightBarButtonItem = self.doneButton;
         self.tBar.items = [NSArray arrayWithObjects: doneButton, nil];
         doneButton.action = @selector(action:);
-//       self.tBar.items = [[NSArray alloc] initWithObjects:flexSpace,doneB, nil];
-        //doneB.tintColor = [UIColor colorWithRed:(102.0/255.0) green:(20.0/255.0) blue:(11.0/255.0) alpha:1];;
-        //doneB.pickerShown = YES;
-        //[UINavigationBar appearnace].TintColor = [UIColor redColor];
-        //self.navigationItem.rightBarButtonItem = doneB;
-        //[[NSArray alloc] initWithObjects: doneButton, self.doneButton,nil];
-        //CGRect date
+      
     }
     
 }
+-(IBAction)p1Touched:(NSTimer *)theP1Timer
+{
+    NSLog(@"P1TOUCH");
+    [self p1UpdateTimer:theP1Timer];
+    [self countdownTimer];
+}
+
 
 -(IBAction)restartTimer:(id)sender
 {

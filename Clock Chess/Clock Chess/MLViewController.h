@@ -12,8 +12,8 @@
 
 
 @property (nonatomic, weak) IBOutlet UIPickerView *tPicker;
-@property (assign, nonatomic)  NSTimer *p1Timer;
-@property (assign, nonatomic)  NSTimer *p2Timer;
+//@property (assign, nonatomic)  NSTimer *p1Timer;
+//@property (assign, nonatomic)  NSTimer *p2Timer;
 @property (assign, nonatomic) IBOutlet UILabel *p1TimerLabel;
 @property (assign, nonatomic) IBOutlet UILabel *p2TimerLabel;
 @property (assign, nonatomic) IBOutlet UIToolbar *tBar;
@@ -22,5 +22,6 @@
 //@property (assign, nonatomic) IBOutlet UIBarButtonSystemItem *t;
 
 @property int *timerValue;
+
 
 @end

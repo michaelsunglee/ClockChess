@@ -410,6 +410,7 @@
 				90AE02501A11B9910050E8E0 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		90AE02511A11B9910050E8E0 /* Build configuration list for PBXNativeTarget "Clock ChessTests" */ = {
 			isa = XCConfigurationList;
@@ -418,6 +419,7 @@
 				90AE02531A11B9910050E8E0 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
