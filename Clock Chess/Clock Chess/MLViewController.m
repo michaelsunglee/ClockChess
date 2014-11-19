@@ -25,6 +25,8 @@
     int p1Seconds;
     int p2Minutes;
     int p2Seconds;
+    int firstMove;
+    int mostRecentTouch;
 }
 
 @property (nonatomic, strong) IBOutlet UIViewController *main;
@@ -55,6 +57,7 @@
     self.tPicker.dataSource = self;
     self.tPicker.delegate = self;
     p2TimerLabel.layer.transform = CATransform3DMakeRotation(M_PI,0,0,1);
+
    
 }
 
@@ -100,23 +103,24 @@
     
     p2TimerLabel.userInteractionEnabled = YES;
     
-    NSTimer *p1Timer = [NSTimer scheduledTimerWithTimeInterval:1.0f target:self selector:@selector(p1UpdateTimer:) userInfo:nil repeats:YES];
+
    // NSTimer *p2Timer = [NSTimer scheduledTimerWithTimeInterval:1.0f target:self selector:@selector(p2UpdateTimer:) userInfo:nil repeats:YES];
 
     //change HERE
     //[self  p1UpdateTimer:p1Timer];
     //[self p2UpdateTimer:p2Timer];
+        firstMove = 0;
     
 }
 
 
 -(void)p1UpdateTimer:(NSTimer *)theP1Timer
 {
-    if(timeReq > 0)
+    if(p1TimeReq > 0)
     {
-        --timeReq;
-        p1Minutes = timeReq / 60;
-        p1Seconds = timeReq % 60;
+        --p1TimeReq;
+        p1Minutes = p1TimeReq / 60;
+        p1Seconds = p1TimeReq % 60;
         p1TimerLabel.text = [NSString stringWithFormat:@"%02d:%02d", p1Minutes, p1Seconds];
     }
     else
@@ -127,12 +131,16 @@
 
 -(void)p2UpdateTimer:(NSTimer *)theP2Timer
 {
-    if(timeReq > 0)
+    if(p2TimeReq > 0)
     {
-        --timeReq;
-        p2Minutes = timeReq / 60;
-        p2Seconds = timeReq % 60;
+        --p2TimeReq;
+        p2Minutes = p2TimeReq / 60;
+        p2Seconds = p2TimeReq % 60;
         p2TimerLabel.text = [NSString stringWithFormat:@"%02d:%02d", p2Minutes, p2Seconds];
+    }
+    else
+    {
+        p1TimerLabel.text = @"Time UP";
     }
 }
 
@@ -176,11 +184,48 @@
     }
     
 }
--(IBAction)p1Touched:(NSTimer *)theP1Timer
+-(IBAction)p1Touched:(NSTimer *)theTimer
 {
     NSLog(@"P1TOUCH");
-    [self p1UpdateTimer:theP1Timer];
-    [self countdownTimer];
+    mostRecentTouch = 1;
+    if(firstMove == 0)
+    {
+        NSLog(@"AT LEAST HERE");
+        while(p1TimeReq > 0 && mostRecentTouch == 1)
+        {
+            [self p1UpdateTimer:theTimer];
+            NSLog(@"P1Updated");
+            firstMove = 1;
+            
+        }
+        
+    }
+    else
+    {
+        while (p2TimeReq > 0 && mostRecentTouch == 1)
+        {
+            [self p2UpdateTimer:theTimer];
+            NSLog(@"P2Updated");
+            
+        }
+        
+    }
+    //[self countdownTimer];
+}
+
+-(IBAction)p2Touched:(NSTimer *)theTimer
+{
+    NSLog(@"P2TOUCH");
+    mostRecentTouch = 2;
+    if(firstMove == 0)
+    {
+        [self p2UpdateTimer:theTimer];
+        firstMove = 2;
+    }
+    else
+    {
+        [self p1UpdateTimer:theTimer];
+    }
 }
 
 

@@ -192,7 +192,11 @@
                 <action selector="p1Touched:" destination="-1" id="tNp-rx-NIK"/>
             </connections>
         </tapGestureRecognizer>
-        <tapGestureRecognizer id="UMg-1m-ICx"/>
+        <tapGestureRecognizer id="UMg-1m-ICx">
+            <connections>
+                <action selector="p2Touched:" destination="-1" id="4uh-wU-oFq"/>
+            </connections>
+        </tapGestureRecognizer>
     </objects>
     <resources>
         <image name="clock2" width="128" height="128"/>
