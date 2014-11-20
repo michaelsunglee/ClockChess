@@ -22,6 +22,8 @@
 //@property (assign, nonatomic) IBOutlet UIBarButtonSystemItem *t;
 
 @property int *timerValue;
+extern NSTimer *p1Timer;
+extern NSTimer *p2Timer;
 
 
 @end

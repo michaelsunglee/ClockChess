@@ -103,8 +103,8 @@
     
     p2TimerLabel.userInteractionEnabled = YES;
     
-
-   // NSTimer *p2Timer = [NSTimer scheduledTimerWithTimeInterval:1.0f target:self selector:@selector(p2UpdateTimer:) userInfo:nil repeats:YES];
+    p1Timer = [NSTimer scheduledTimerWithTimeInterval:1.0f target:self selector:@selector(p1UpdateTimer:) userInfo:nil repeats:YES];
+    p2Timer = [NSTimer scheduledTimerWithTimeInterval:1.0f target:self selector:@selector(p2UpdateTimer:) userInfo:nil repeats:YES];
 
     //change HERE
     //[self  p1UpdateTimer:p1Timer];
@@ -196,13 +196,13 @@
             [self p1UpdateTimer:theTimer];
             NSLog(@"P1Updated");
             firstMove = 1;
-            
+            //sleep(1);
+            //mostRecentTouch = 2;
         }
-        
     }
     else
     {
-        while (p2TimeReq > 0 && mostRecentTouch == 1)
+        while (p2TimeReq > 0 && mostRecentTouch == 2)
         {
             [self p2UpdateTimer:theTimer];
             NSLog(@"P2Updated");
@@ -219,12 +219,22 @@
     mostRecentTouch = 2;
     if(firstMove == 0)
     {
-        [self p2UpdateTimer:theTimer];
-        firstMove = 2;
+        while(p2TimeReq > 0 && mostRecentTouch == 2)
+        {
+            [self p2UpdateTimer:theTimer];
+            firstMove = 2;
+            sleep(1);
+            mostRecentTouch = 1;
+        }
+        
     }
     else
     {
-        [self p1UpdateTimer:theTimer];
+        while(p2TimeReq > 0 && mostRecentTouch == 1)
+        {
+            [self p2UpdateTimer:theTimer];
+        }
+        
     }
 }
 
