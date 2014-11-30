@@ -11,7 +11,6 @@
 #import <UIKit/UIKit.h>
 #import <Foundation/Foundation.h>
 #import <QuartzCore/QuartzCore.h>
-
 @interface MLViewController ()
 {
     NSArray *_timerData;
@@ -20,6 +19,7 @@
     NSInteger p1TimeReq;
     NSInteger p2TimeReq;
     NSInteger timeReqChosen;
+    NSDate *currentDate;
     int startTime;
     int p1Minutes;
     int p1Seconds;
@@ -33,6 +33,9 @@
 @property (nonatomic, weak) IBOutlet UIButton *settings;
 @property (nonatomic, weak) IBOutlet UIButton *restart;
 @property (nonatomic, weak) IBOutlet UILabel *test;
+@property (nonatomic, strong) NSTimer *p1Timer;
+@property (nonatomic, strong) NSDate *p1MoveStart;
+@property (nonatomic, strong) NSDate *p2MoveStart;
 
 @end
 
@@ -57,8 +60,68 @@
     self.tPicker.dataSource = self;
     self.tPicker.delegate = self;
     p2TimerLabel.layer.transform = CATransform3DMakeRotation(M_PI,0,0,1);
-
+    
+    [super viewDidLoad];
    
+}
+
+-(void)updateP1Timer{
+   // NSLog(@"updateP1Timer");
+   
+    NSTimeInterval timeInterval = [currentDate timeIntervalSinceDate:self.p1MoveStart];
+    NSDate *timerDate = [NSDate dateWithTimeIntervalSince1970:timeInterval];
+    
+    //Create date formatter
+    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+    [dateFormatter setDateFormat:@"mm:ss"];
+    //[dateFormatter setTimeZone:[NSTimeZone timeZoneForSecondsFromGMT:0.0]];
+    
+    //Format the elapsed time and update label
+    NSString *timeString = [dateFormatter stringFromDate:timerDate];
+    
+    self.p1TimerLabel.text = timeString;
+    NSString *timestamp = [self timeStamp:currentDate];
+    NSLog(@"%@", timestamp);
+
+    self.p2MoveStart = [NSDate date];
+    NSNumberFormatter *formatter = [[NSNumberFormatter alloc] init];
+    [formatter setNumberStyle:NSNumberFormatterDecimalStyle];
+    NSNumber *elapsedTime = [formatter numberFromString:timestamp];
+    NSNumber *timeLeft = [NSNumber numberWithInteger:timeReq];
+    
+    if([elapsedTime doubleValue] > [timeLeft doubleValue])
+    {
+        NSLog(@"DONE");
+        NSLog(@"%@", elapsedTime);
+        NSLog(@"%@", timeLeft);
+        [self.p1Timer invalidate];
+    p1TimerLabel.text = @"TIME UP";
+    }
+    
+}
+
+- (NSString *) timeStamp:(NSDate *)TheCurrentDate{
+    return [NSString stringWithFormat:@"%f",[[NSDate date] timeIntervalSinceDate:currentDate]];
+}
+
+-(void)stopP1Timer{
+    [self.p1Timer invalidate];
+   // self.p1Timer = nil;
+  // [self updateP1Timer];
+    
+}
+
+-(IBAction)p2Touched:(NSTimer *)theTimer
+{
+    NSLog(@"P2TOUCH");
+    [self stopP1Timer];
+    mostRecentTouch = 2;
+    
+}
+
+-(void)sigSel:(NSTimer *)timer
+{
+    NSLog(@"sigSel HERE");
 }
 
 -(void)didReceiveMemoryWarning
@@ -82,6 +145,7 @@
     return _timerData[row];
 }
 
+
 -(void)action:SEL
 {
     NSLog(@"Done Button HIT!!!");
@@ -103,30 +167,23 @@
     
     p2TimerLabel.userInteractionEnabled = YES;
     
-    p1Timer = [NSTimer scheduledTimerWithTimeInterval:1.0f target:self selector:@selector(p1UpdateTimer:) userInfo:nil repeats:YES];
-    p2Timer = [NSTimer scheduledTimerWithTimeInterval:1.0f target:self selector:@selector(p2UpdateTimer:) userInfo:nil repeats:YES];
+   // p1Timer = [NSTimer scheduledTimerWithTimeInterval:1.0f target:self selector:@selector(p1UpdateTimer:) userInfo:nil repeats:YES];
+ //   p2Timer = [NSTimer scheduledTimerWithTimeInterval:1.0f target:self selector:@selector(p2UpdateTimer:) userInfo:nil repeats:YES];
 
     //change HERE
     //[self  p1UpdateTimer:p1Timer];
     //[self p2UpdateTimer:p2Timer];
         firstMove = 0;
     
+
+    
 }
 
 
 -(void)p1UpdateTimer:(NSTimer *)theP1Timer
 {
-    if(p1TimeReq > 0)
-    {
-        --p1TimeReq;
-        p1Minutes = p1TimeReq / 60;
-        p1Seconds = p1TimeReq % 60;
-        p1TimerLabel.text = [NSString stringWithFormat:@"%02d:%02d", p1Minutes, p1Seconds];
-    }
-    else
-    {
-        p1TimerLabel.text = @"TIME UP";
-    }
+    NSLog(@"P1UPDATE TIMER");
+    
 }
 
 -(void)p2UpdateTimer:(NSTimer *)theP2Timer
@@ -186,57 +243,29 @@
 }
 -(IBAction)p1Touched:(NSTimer *)theTimer
 {
-    NSLog(@"P1TOUCH");
-    mostRecentTouch = 1;
-    if(firstMove == 0)
-    {
-        NSLog(@"AT LEAST HERE");
-        while(p1TimeReq > 0 && mostRecentTouch == 1)
-        {
-            [self p1UpdateTimer:theTimer];
-            NSLog(@"P1Updated");
-            firstMove = 1;
-            //sleep(1);
-            //mostRecentTouch = 2;
-        }
-    }
-    else
-    {
-        while (p2TimeReq > 0 && mostRecentTouch == 2)
-        {
-            [self p2UpdateTimer:theTimer];
-            NSLog(@"P2Updated");
-            
-        }
-        
-    }
-    //[self countdownTimer];
+    NSLog(@"IBAction p1Touched");
+    self.p1Timer = [NSTimer scheduledTimerWithTimeInterval:1.0/10.0
+                                                    target:self
+                                                  selector:@selector(updateP1Timer)
+                                                  userInfo:nil
+                                                   repeats:YES];
+    currentDate = [NSDate date];
+   // NSMethodSignature *sgn = [self methodSignatureForSelector:@selector(sigSel:)];
+    //NSInvocation *inv = [NSInvocation invocationWithMethodSignature:sgn];
+    //[inv setTarget:self];
+    //[inv setSelector:@selector(sigSel:)];
+    
+  //  NSTimer *p1Timer = [NSTimer timerWithTimeInterval: 1.0
+                                         //  invocation:inv
+                                           //   repeats:NO];
+
+    //NSRunLoop *runner = [NSRunLoop currentRunLoop];
+    //[runner addTimer:p1Timer forMode: NSDefaultRunLoopMode];
+    
+  
 }
 
--(IBAction)p2Touched:(NSTimer *)theTimer
-{
-    NSLog(@"P2TOUCH");
-    mostRecentTouch = 2;
-    if(firstMove == 0)
-    {
-        while(p2TimeReq > 0 && mostRecentTouch == 2)
-        {
-            [self p2UpdateTimer:theTimer];
-            firstMove = 2;
-            sleep(1);
-            mostRecentTouch = 1;
-        }
-        
-    }
-    else
-    {
-        while(p2TimeReq > 0 && mostRecentTouch == 1)
-        {
-            [self p2UpdateTimer:theTimer];
-        }
-        
-    }
-}
+
 
 
 -(IBAction)restartTimer:(id)sender

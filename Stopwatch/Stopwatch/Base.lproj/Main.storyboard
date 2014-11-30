@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="6250" systemVersion="14A389" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="vXZ-lx-hvc">
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6244"/>
+    </dependencies>
+    <scenes>
+        <!--View Controller-->
+        <scene sceneID="ufC-wZ-h7g">
+            <objects>
+                <viewController id="vXZ-lx-hvc" customClass="ViewController" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="jyV-Pf-zRb"/>
+                        <viewControllerLayoutGuide type="bottom" id="2fi-mo-0CV"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="kh9-bI-dsS">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <subviews>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="h0E-pg-7UF">
+                                <rect key="frame" x="59" y="57" width="482" height="131"/>
+                                <color key="backgroundColor" red="1" green="0.83411778133313663" blue="0.74280540788339755" alpha="1" colorSpace="calibratedRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="131" id="34v-k1-asg"/>
+                                    <constraint firstAttribute="width" constant="482" id="WhG-mo-Euv"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" name="Helvetica-Light" family="Helvetica" pointSize="42"/>
+                                <state key="normal" title="START">
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="onStartPressed:" destination="vXZ-lx-hvc" eventType="touchUpInside" id="vZZ-2p-Ncx"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="dox-kh-VYB">
+                                <rect key="frame" x="59" y="239" width="482" height="131"/>
+                                <color key="backgroundColor" red="1" green="0.83411778133313663" blue="0.74280540788339755" alpha="1" colorSpace="calibratedRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="482" id="f9b-lW-dEX"/>
+                                    <constraint firstAttribute="height" constant="131" id="qc6-rk-ONu"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" name="Helvetica-Light" family="Helvetica" pointSize="42"/>
+                                <state key="normal" title="STOP">
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="onStopPressed:" destination="vXZ-lx-hvc" eventType="touchUpInside" id="Bei-qH-UDQ"/>
+                                </connections>
+                            </button>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="00:00:00.000" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="UZa-H5-atk">
+                                <rect key="frame" x="59" y="423" width="482" height="131"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="482" id="IAK-t0-O7M"/>
+                                    <constraint firstAttribute="height" constant="131" id="Mjg-g2-8RB"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" name="Helvetica-Light" family="Helvetica" pointSize="42"/>
+                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="UZa-H5-atk" firstAttribute="top" secondItem="dox-kh-VYB" secondAttribute="bottom" constant="53" id="7Cd-m9-eau"/>
+                            <constraint firstAttribute="centerX" secondItem="h0E-pg-7UF" secondAttribute="centerX" id="GKs-gN-lj6"/>
+                            <constraint firstItem="h0E-pg-7UF" firstAttribute="top" secondItem="jyV-Pf-zRb" secondAttribute="bottom" constant="37" id="RD2-3l-qKX"/>
+                            <constraint firstAttribute="centerX" secondItem="dox-kh-VYB" secondAttribute="centerX" id="SLQ-Df-sRh"/>
+                            <constraint firstItem="dox-kh-VYB" firstAttribute="top" secondItem="h0E-pg-7UF" secondAttribute="bottom" constant="51" id="XZ7-z2-LGP"/>
+                            <constraint firstAttribute="centerX" secondItem="UZa-H5-atk" secondAttribute="centerX" id="vga-EQ-w46"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <outlet property="stopwatchLabel" destination="UZa-H5-atk" id="Di6-qi-uRg"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="x5A-6p-PRh" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="180" y="351"/>
+        </scene>
+    </scenes>
+</document>
