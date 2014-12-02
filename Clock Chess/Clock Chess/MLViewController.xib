@@ -103,6 +103,9 @@
                     <state key="normal" image="restart">
                         <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                     </state>
+                    <connections>
+                        <action selector="restartTimer:" destination="-1" eventType="touchUpInside" id="uHi-Gq-HoV"/>
+                    </connections>
                 </button>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="CQK-KV-bPU">
                     <rect key="frame" x="277" y="16" width="46" height="30"/>

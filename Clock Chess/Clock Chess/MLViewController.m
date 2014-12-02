@@ -48,8 +48,6 @@
 @end
 
 @implementation MLViewController
-//@synthesize p1Timer;
-//@synthesize p2Timer;
 @synthesize p1TimerLabel;
 @synthesize p2TimerLabel;
 @synthesize timerValue;
@@ -61,7 +59,6 @@
 -(void)viewDidLoad
 {
     [super viewDidLoad];
-    //MLViewController *mainView = [[MLViewController alloc] initWithFrame: mainViewRect];
     tPicker.hidden = YES;
     tBar.hidden = YES;
     _timerData = @[@"1", @"2", @"3", @"4", @"5", @"6", @"7", @"8", @"9", @"10", @"11", @"12",@"13",@"14",@"15",@"20", @"25", @"30"];
@@ -185,9 +182,6 @@
 
 -(void)stopP1Timer{
     [self.p1Timer invalidate];
-   // self.p1Timer = nil;
-  // [self updateP1Timer];
-    
 }
 
 -(void)stopP2Timer{
@@ -204,14 +198,12 @@
                                                       selector:@selector(updateP1Timer)
                                                       userInfo:nil
                                                        repeats:YES];
-        currentDate = [NSDate date];
     }
     else if(p1MoveYet == TRUE)
     {
         [self stopP1Timer];
         p2MoveYet = FALSE;
         [self p2Touched];
-        
     }
     
     
@@ -240,16 +232,9 @@
         [self p1Touched];
         
     }
-   
     
 }
 
-
-
--(void)sigSel:(NSTimer *)timer
-{
-    NSLog(@"sigSel HERE");
-}
 
 -(void)didReceiveMemoryWarning
 {
@@ -289,51 +274,9 @@
     p2TimerLabel.hidden = NO;
     
     p1TimerLabel.userInteractionEnabled = YES;
-    //UITapGestureRecognizer *p1LabelGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(p1LabelTouched)];
-    //[p1LabelGesture addGestureRecognizer:p1LabelGesture];
-    
     p2TimerLabel.userInteractionEnabled = YES;
-    
-   // p1Timer = [NSTimer scheduledTimerWithTimeInterval:1.0f target:self selector:@selector(p1UpdateTimer:) userInfo:nil repeats:YES];
- //   p2Timer = [NSTimer scheduledTimerWithTimeInterval:1.0f target:self selector:@selector(p2UpdateTimer:) userInfo:nil repeats:YES];
-
-    //change HERE
-    //[self  p1UpdateTimer:p1Timer];
-    //[self p2UpdateTimer:p2Timer];
-        firstMove = 0;
-    
-
-    
-}
-/*
-
--(void)p1UpdateTimer:(NSTimer *)theP1Timer
-{
-    NSLog(@"P1UPDATE TIMER");
-    
 }
 
--(void)p2UpdateTimer:(NSTimer *)theP2Timer
-{
-    if(p2TimeReq > 0)
-    {
-        --p2TimeReq;
-        p2Minutes = p2TimeReq / 60;
-        p2Seconds = p2TimeReq % 60;
-        p2TimerLabel.text = [NSString stringWithFormat:@"%02d:%02d", p2Minutes, p2Seconds];
-    }
-    else
-    {
-        p1TimerLabel.text = @"Time UP";
-    }
-}
- */
-
--(void)countdownTimer
-{
-   // timeReq = 0;
-
-}
 
 -(instancetype)initWithNibName:(NSString *)nibNameOrNil
                         bundle:(NSBundle *)nibBundleOrNil
@@ -347,8 +290,6 @@
     }
     return self;
 }
-
-
 
 -(IBAction)settingsPage:(id)sender
 {
@@ -373,21 +314,17 @@
 -(IBAction)restartTimer:(id)sender
 {
     NSLog(@"restart timer!");
-    timeReq = timeReqChosen;
+   // timeReq = timeReqChosen;
+    [self stopP1Timer];
+    [self stopP2Timer];
+    p1TimeLeft = [NSNumber numberWithInteger:timeReq];
+    p2TimeLeft = [NSNumber numberWithInteger:timeReq];
+    p1Minutes = [p1TimeLeft intValue] / 60;
+    p1Seconds = [p1TimeLeft intValue] % 60;
+    p2Minutes = [p2TimeLeft intValue] / 60;
+    p2Seconds = [p2TimeLeft intValue] % 60;
+    p1MoveYet = FALSE;
+    p2MoveYet = FALSE;
+    [self updateLabel];
 }
-
-
-
-
-// NSMethodSignature *sgn = [self methodSignatureForSelector:@selector(sigSel:)];
-//NSInvocation *inv = [NSInvocation invocationWithMethodSignature:sgn];
-//[inv setTarget:self];
-//[inv setSelector:@selector(sigSel:)];
-
-//  NSTimer *p1Timer = [NSTimer timerWithTimeInterval: 1.0
-//  invocation:inv
-//   repeats:NO];
-
-//NSRunLoop *runner = [NSRunLoop currentRunLoop];
-//[runner addTimer:p1Timer forMode: NSDefaultRunLoopMode];
 @end
