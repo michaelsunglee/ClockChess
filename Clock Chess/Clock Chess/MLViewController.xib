@@ -189,12 +189,12 @@
         </view>
         <tapGestureRecognizer id="v0e-dH-xO8">
             <connections>
-                <action selector="p1Touched:" destination="-1" id="tNp-rx-NIK"/>
+                <action selector="p1Touched" destination="-1" id="elD-TM-HsZ"/>
             </connections>
         </tapGestureRecognizer>
         <tapGestureRecognizer id="UMg-1m-ICx">
             <connections>
-                <action selector="p2Touched:" destination="-1" id="4uh-wU-oFq"/>
+                <action selector="p2Touched" destination="-1" id="b9M-3z-SAK"/>
             </connections>
         </tapGestureRecognizer>
     </objects>

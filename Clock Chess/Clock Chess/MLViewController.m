@@ -20,6 +20,10 @@
     NSInteger p2TimeReq;
     NSInteger timeReqChosen;
     NSDate *currentDate;
+    NSNumber *p1ElapsedTime;
+    NSNumber *p1TimeLeft;
+    NSNumber *p2ElapsedTime;
+    NSNumber *p2TimeLeft;
     int startTime;
     int p1Minutes;
     int p1Seconds;
@@ -27,6 +31,9 @@
     int p2Seconds;
     int firstMove;
     int mostRecentTouch;
+    BOOL p1MoveYet;
+    BOOL p2MoveYet;
+    BOOL veryFirstMove;
 }
 
 @property (nonatomic, strong) IBOutlet UIViewController *main;
@@ -34,6 +41,7 @@
 @property (nonatomic, weak) IBOutlet UIButton *restart;
 @property (nonatomic, weak) IBOutlet UILabel *test;
 @property (nonatomic, strong) NSTimer *p1Timer;
+@property (nonatomic, strong) NSTimer *p2Timer;
 @property (nonatomic, strong) NSDate *p1MoveStart;
 @property (nonatomic, strong) NSDate *p2MoveStart;
 
@@ -60,44 +68,115 @@
     self.tPicker.dataSource = self;
     self.tPicker.delegate = self;
     p2TimerLabel.layer.transform = CATransform3DMakeRotation(M_PI,0,0,1);
-    
+    veryFirstMove = TRUE;
     [super viewDidLoad];
-   
 }
 
 -(void)updateP1Timer{
-   // NSLog(@"updateP1Timer");
-   
-    NSTimeInterval timeInterval = [currentDate timeIntervalSinceDate:self.p1MoveStart];
-    NSDate *timerDate = [NSDate dateWithTimeIntervalSince1970:timeInterval];
+    NSTimeInterval p1TimeInterval = [currentDate timeIntervalSinceDate:self.p1MoveStart];
+    NSDate *p1TimerDate = [NSDate dateWithTimeIntervalSince1970:p1TimeInterval];
     
     //Create date formatter
     NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
     [dateFormatter setDateFormat:@"mm:ss"];
-    //[dateFormatter setTimeZone:[NSTimeZone timeZoneForSecondsFromGMT:0.0]];
     
     //Format the elapsed time and update label
-    NSString *timeString = [dateFormatter stringFromDate:timerDate];
+    NSString *p1TimeString = [dateFormatter stringFromDate:p1TimerDate];
     
-    self.p1TimerLabel.text = timeString;
-    NSString *timestamp = [self timeStamp:currentDate];
-    NSLog(@"%@", timestamp);
+    self.p1TimerLabel.text = p1TimeString;
+    p1TimeLeft = [NSNumber numberWithInt:[p1TimeLeft intValue] - 1];
+    NSString *p1Timestamp = [self timeStamp:currentDate];
 
     self.p2MoveStart = [NSDate date];
     NSNumberFormatter *formatter = [[NSNumberFormatter alloc] init];
     [formatter setNumberStyle:NSNumberFormatterDecimalStyle];
-    NSNumber *elapsedTime = [formatter numberFromString:timestamp];
-    NSNumber *timeLeft = [NSNumber numberWithInteger:timeReq];
-    
-    if([elapsedTime doubleValue] > [timeLeft doubleValue])
+    p1ElapsedTime = [formatter numberFromString:p1Timestamp];
+    //timeLeft = [NSNumber numberWithInteger:timeReq];
+    if(veryFirstMove == TRUE)
     {
-        NSLog(@"DONE");
-        NSLog(@"%@", elapsedTime);
-        NSLog(@"%@", timeLeft);
-        [self.p1Timer invalidate];
-    p1TimerLabel.text = @"TIME UP";
+        p1TimeLeft = [NSNumber numberWithInteger:timeReq];
+        p2TimeLeft = [NSNumber numberWithInteger:timeReq];
+        p1Minutes = [p1TimeLeft intValue] / 60;
+        p1Seconds = [p1TimeLeft intValue] % 60;
+        p2Minutes = [p2TimeLeft intValue] / 60;
+        p2Seconds = [p2TimeLeft intValue] % 60;
+        veryFirstMove = FALSE;
+    }
+    if(p1MoveYet == FALSE)
+    {
+        p1MoveYet = TRUE;
     }
     
+    p1Minutes = [p1TimeLeft intValue] / 60;
+    p1Seconds = [p1TimeLeft intValue] % 60;
+    NSLog(@"p1Seconds = %d", p1Seconds);
+    [self updateLabel];
+    NSLog(@"UPDATE");
+    
+    if([p1ElapsedTime doubleValue] > [p1TimeLeft doubleValue])
+    {
+        NSLog(@"DONE");
+        NSLog(@"%@", p1ElapsedTime);
+        NSLog(@"%@", p1TimeLeft);
+        [self.p1Timer invalidate];
+        p1TimerLabel.text = @"TIME UP";
+    }
+}
+
+-(void)updateP2Timer{
+    NSTimeInterval p2TimeInterval = [currentDate timeIntervalSinceDate:self.p2MoveStart];
+    NSDate *p2TimerDate = [NSDate dateWithTimeIntervalSince1970:p2TimeInterval];
+    
+    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+    [dateFormatter setDateFormat:@"mm:ss"];
+    
+    NSString *p2TimeString = [dateFormatter stringFromDate:p2TimerDate];
+    
+    self.p2TimerLabel.text = p2TimeString;
+    p2TimeLeft = [NSNumber numberWithInt:[p2TimeLeft intValue] - 1];
+    NSString *p2Timestamp = [self timeStamp:currentDate];
+    
+    self.p1MoveStart = [NSDate date];
+    NSNumberFormatter *formatter = [[NSNumberFormatter alloc] init];
+    [formatter setNumberStyle:NSNumberFormatterDecimalStyle];
+    p2ElapsedTime = [formatter numberFromString:p2Timestamp];
+    if(veryFirstMove == TRUE)
+    {
+        p1TimeLeft = [NSNumber numberWithInteger:timeReq];
+        p2TimeLeft = [NSNumber numberWithInteger:timeReq];
+        p1Minutes = [p1TimeLeft intValue] / 60;
+        p1Seconds = [p1TimeLeft intValue] % 60;
+        p2Minutes = [p2TimeLeft intValue] / 60;
+        p2Seconds = [p2TimeLeft intValue] % 60;
+        veryFirstMove = FALSE;
+    }
+    
+    if(p2MoveYet == FALSE)
+    {
+        p2MoveYet = TRUE;
+    }
+    
+    p2Minutes = [p2TimeLeft intValue] / 60;
+    p2Seconds = [p2TimeLeft intValue] % 60;
+    NSLog(@"p2Seconds = %d", p2Seconds);
+    [self updateLabel];
+    NSLog(@"UPDATE");
+    
+    if([p2ElapsedTime doubleValue] > [p2TimeLeft doubleValue])
+    {
+        NSLog(@"DONE");
+        NSLog(@"%@", p2ElapsedTime);
+        NSLog(@"%@", p2TimeLeft);
+        [self.p2Timer invalidate];
+        p2TimerLabel.text = @"TIME UP";
+    }
+    
+}
+
+-(void)updateLabel{
+    p1TimerLabel.text = [NSString stringWithFormat:@"%02d:%02d", p1Minutes, p1Seconds];
+    p2TimerLabel.text = [NSString stringWithFormat:@"%02d:%02d", p2Minutes, p2Seconds];
+
 }
 
 - (NSString *) timeStamp:(NSDate *)TheCurrentDate{
@@ -111,13 +190,61 @@
     
 }
 
--(IBAction)p2Touched:(NSTimer *)theTimer
+-(void)stopP2Timer{
+    [self.p2Timer invalidate];
+}
+
+-(IBAction)p1Touched
 {
-    NSLog(@"P2TOUCH");
-    [self stopP1Timer];
-    mostRecentTouch = 2;
+    if(p1MoveYet == FALSE)
+    {
+        NSLog(@"P1TOUCH");
+        self.p1Timer = [NSTimer scheduledTimerWithTimeInterval:1.0
+                                                        target:self
+                                                      selector:@selector(updateP1Timer)
+                                                      userInfo:nil
+                                                       repeats:YES];
+        currentDate = [NSDate date];
+    }
+    else if(p1MoveYet == TRUE)
+    {
+        [self stopP1Timer];
+        p2MoveYet = FALSE;
+        [self p2Touched];
+        
+    }
+    
     
 }
+-(IBAction)p2Touched
+{
+    if(p2MoveYet == FALSE)
+    {
+       
+        self.p2Timer = [NSTimer scheduledTimerWithTimeInterval:1.0
+                                                        target:self
+                                                      selector:@selector(updateP2Timer)
+                                                      userInfo:nil
+                                                       repeats:YES];
+        NSLog(@"P2TOUCH");
+        NSLog(@"%@", p1ElapsedTime);
+        // timeLeft = [NSNumber numberWithFloat:([timeLeft floatValue] - [elapsedTime floatValue])];
+        NSLog(@"%@", p1TimeLeft);
+        [self stopP1Timer];
+        mostRecentTouch = 2;
+    }
+    else if(p2MoveYet == TRUE)
+    {
+        [self stopP2Timer];
+        p1MoveYet = FALSE;
+        [self p1Touched];
+        
+    }
+   
+    
+}
+
+
 
 -(void)sigSel:(NSTimer *)timer
 {
@@ -178,7 +305,7 @@
 
     
 }
-
+/*
 
 -(void)p1UpdateTimer:(NSTimer *)theP1Timer
 {
@@ -200,6 +327,7 @@
         p1TimerLabel.text = @"Time UP";
     }
 }
+ */
 
 -(void)countdownTimer
 {
@@ -241,36 +369,25 @@
     }
     
 }
--(IBAction)p1Touched:(NSTimer *)theTimer
-{
-    NSLog(@"IBAction p1Touched");
-    self.p1Timer = [NSTimer scheduledTimerWithTimeInterval:1.0/10.0
-                                                    target:self
-                                                  selector:@selector(updateP1Timer)
-                                                  userInfo:nil
-                                                   repeats:YES];
-    currentDate = [NSDate date];
-   // NSMethodSignature *sgn = [self methodSignatureForSelector:@selector(sigSel:)];
-    //NSInvocation *inv = [NSInvocation invocationWithMethodSignature:sgn];
-    //[inv setTarget:self];
-    //[inv setSelector:@selector(sigSel:)];
-    
-  //  NSTimer *p1Timer = [NSTimer timerWithTimeInterval: 1.0
-                                         //  invocation:inv
-                                           //   repeats:NO];
-
-    //NSRunLoop *runner = [NSRunLoop currentRunLoop];
-    //[runner addTimer:p1Timer forMode: NSDefaultRunLoopMode];
-    
-  
-}
-
-
-
 
 -(IBAction)restartTimer:(id)sender
 {
     NSLog(@"restart timer!");
     timeReq = timeReqChosen;
 }
+
+
+
+
+// NSMethodSignature *sgn = [self methodSignatureForSelector:@selector(sigSel:)];
+//NSInvocation *inv = [NSInvocation invocationWithMethodSignature:sgn];
+//[inv setTarget:self];
+//[inv setSelector:@selector(sigSel:)];
+
+//  NSTimer *p1Timer = [NSTimer timerWithTimeInterval: 1.0
+//  invocation:inv
+//   repeats:NO];
+
+//NSRunLoop *runner = [NSRunLoop currentRunLoop];
+//[runner addTimer:p1Timer forMode: NSDefaultRunLoopMode];
 @end
