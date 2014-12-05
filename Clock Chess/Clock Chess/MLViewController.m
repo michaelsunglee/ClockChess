@@ -53,6 +53,8 @@
 @synthesize timerValue;
 @synthesize tBar;
 @synthesize doneButton;
+@synthesize cancelButton;
+@synthesize spaceHolder;
 @synthesize action;
 @synthesize tPicker;
 
@@ -275,6 +277,7 @@
     
     p1TimerLabel.userInteractionEnabled = YES;
     p2TimerLabel.userInteractionEnabled = YES;
+    [self updateLabel];
 }
 
 
@@ -294,19 +297,22 @@
 -(IBAction)settingsPage:(id)sender
 {
     NSLog(@"settingsPage is executed");
+    //p1TimerLabel.backgroundColor = [UIColor whiteColor];
     if(tPicker.hidden == YES)
     {
         tPicker.hidden = NO;
+        tPicker.backgroundColor = [UIColor whiteColor];
         p1TimerLabel.hidden = YES;
+        
         //p2TimerLabel.hidden = YES;
         tBar.hidden = NO;
         [UIView setAnimationDuration:0.3];
         
-
+        self.navigationItem.leftBarButtonItem = self.cancelButton;
         self.navigationItem.rightBarButtonItem = self.doneButton;
-        self.tBar.items = [NSArray arrayWithObjects: doneButton, nil];
+        self.tBar.items = [NSArray arrayWithObjects: cancelButton,spaceHolder,doneButton, nil];
         doneButton.action = @selector(action:);
-      
+        cancelButton.action = @selector(cancelHit);
     }
     
 }
@@ -325,6 +331,17 @@
     p2Seconds = [p2TimeLeft intValue] % 60;
     p1MoveYet = FALSE;
     p2MoveYet = FALSE;
+    
     [self updateLabel];
+}
+
+-(void)cancelHit
+{
+    NSLog(@"Cancel Button Hit");
+    tPicker.hidden = YES;
+    tBar.hidden = YES;
+    p1TimerLabel.hidden = NO;
+    p2TimerLabel.hidden = NO;
+    
 }
 @end
