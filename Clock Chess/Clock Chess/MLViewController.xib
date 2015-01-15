@@ -11,6 +11,7 @@
                 <outlet property="doneButton" destination="wV2-lc-4UL" id="JGI-wb-AGq"/>
                 <outlet property="p1TimerLabel" destination="DqG-gw-3RA" id="L5e-p7-L5Y"/>
                 <outlet property="p2TimerLabel" destination="Uey-ZC-Und" id="zjS-Ak-Ofu"/>
+                <outlet property="restart" destination="iFP-sP-tdg" id="OMh-vU-ZRe"/>
                 <outlet property="settings" destination="Huh-dH-fzM" id="VWM-bh-KbV"/>
                 <outlet property="spaceHolder" destination="RsK-2W-Jdk" id="xgz-uo-fS7"/>
                 <outlet property="tBar" destination="oJw-iB-tNO" id="rqr-Cp-AXR"/>
@@ -40,7 +41,7 @@
                         <action selector="settingsPage:" destination="-1" eventType="touchUpInside" id="wMM-70-IiT"/>
                     </connections>
                 </button>
-                <pickerView contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ok4-YM-x4t">
+                <pickerView contentMode="scaleToFill" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="ok4-YM-x4t">
                     <rect key="frame" x="0.0" y="438" width="600" height="162"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="200" id="DtD-ba-SpL"/>
@@ -55,29 +56,6 @@
                         </mask>
                     </variation>
                 </pickerView>
-                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Player 1" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="DqG-gw-3RA">
-                    <rect key="frame" x="0.0" y="355" width="600" height="245"/>
-                    <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
-                    <gestureRecognizers/>
-                    <constraints>
-                        <constraint firstAttribute="height" constant="50" id="VO8-g1-orz"/>
-                        <constraint firstAttribute="height" constant="250" id="YoO-Q6-VOO"/>
-                        <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="300" id="gQK-ap-BuM"/>
-                    </constraints>
-                    <fontDescription key="fontDescription" name="Helvetica-Light" family="Helvetica" pointSize="78"/>
-                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
-                    <nil key="highlightedColor"/>
-                    <variation key="default">
-                        <mask key="constraints">
-                            <exclude reference="VO8-g1-orz"/>
-                            <exclude reference="YoO-Q6-VOO"/>
-                            <exclude reference="gQK-ap-BuM"/>
-                        </mask>
-                    </variation>
-                    <connections>
-                        <outletCollection property="gestureRecognizers" destination="v0e-dH-xO8" appends="YES" id="wIK-pb-Atv"/>
-                    </connections>
-                </label>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Player 2" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Uey-ZC-Und">
                     <rect key="frame" x="0.0" y="0.0" width="600" height="245"/>
                     <color key="backgroundColor" white="0.41570148601398599" alpha="1" colorSpace="calibratedWhite"/>
@@ -116,16 +94,41 @@
                         <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                     </state>
                 </button>
-                <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" translucent="NO" translatesAutoresizingMaskIntoConstraints="NO" id="oJw-iB-tNO">
-                    <rect key="frame" x="0.0" y="355" width="600" height="44"/>
+                <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" ambiguous="YES" misplaced="YES" translucent="NO" translatesAutoresizingMaskIntoConstraints="NO" id="oJw-iB-tNO">
+                    <rect key="frame" x="0.0" y="355" width="600" height="83"/>
                     <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                     <items>
                         <barButtonItem title="Cancel" id="HOV-TB-ver"/>
-                        <barButtonItem style="plain" systemItem="flexibleSpace" id="RsK-2W-Jdk"/>
+                        <barButtonItem style="plain" systemItem="flexibleSpace" id="RsK-2W-Jdk">
+                            <inset key="imageInsets" minX="0.0" minY="2" maxX="0.0" maxY="0.0"/>
+                        </barButtonItem>
                         <barButtonItem title="Done" id="wV2-lc-4UL"/>
                     </items>
                     <color key="barTintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                 </toolbar>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Player 1" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="DqG-gw-3RA">
+                    <rect key="frame" x="0.0" y="355" width="600" height="245"/>
+                    <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                    <gestureRecognizers/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="50" id="VO8-g1-orz"/>
+                        <constraint firstAttribute="height" constant="250" id="YoO-Q6-VOO"/>
+                        <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="300" id="gQK-ap-BuM"/>
+                    </constraints>
+                    <fontDescription key="fontDescription" name="Helvetica-Light" family="Helvetica" pointSize="78"/>
+                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                    <nil key="highlightedColor"/>
+                    <variation key="default">
+                        <mask key="constraints">
+                            <exclude reference="VO8-g1-orz"/>
+                            <exclude reference="YoO-Q6-VOO"/>
+                            <exclude reference="gQK-ap-BuM"/>
+                        </mask>
+                    </variation>
+                    <connections>
+                        <outletCollection property="gestureRecognizers" destination="v0e-dH-xO8" appends="YES" id="wIK-pb-Atv"/>
+                    </connections>
+                </label>
             </subviews>
             <color key="backgroundColor" red="0.80392156862745101" green="0.52156862745098043" blue="0.24705882352941178" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
             <constraints>
@@ -140,9 +143,9 @@
                 <constraint firstItem="Huh-dH-fzM" firstAttribute="top" secondItem="Uey-ZC-Und" secondAttribute="bottom" constant="20" id="BJS-Kc-DfK"/>
                 <constraint firstItem="Huh-dH-fzM" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" constant="285" id="CEy-fB-A21"/>
                 <constraint firstItem="Huh-dH-fzM" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="277" id="Chq-Yi-sRf"/>
-                <constraint firstItem="DqG-gw-3RA" firstAttribute="top" secondItem="Huh-dH-fzM" secondAttribute="bottom" constant="20" id="DLi-we-fJq"/>
                 <constraint firstAttribute="trailing" secondItem="ok4-YM-x4t" secondAttribute="trailing" id="DUb-2U-LDh"/>
                 <constraint firstAttribute="trailing" secondItem="iFP-sP-tdg" secondAttribute="trailing" constant="50" id="G01-Zt-GuN"/>
+                <constraint firstItem="DqG-gw-3RA" firstAttribute="top" secondItem="Huh-dH-fzM" secondAttribute="bottom" constant="20" id="HnK-zR-5vG"/>
                 <constraint firstAttribute="centerY" secondItem="Huh-dH-fzM" secondAttribute="centerY" id="M8X-Cw-ewY"/>
                 <constraint firstItem="Uey-ZC-Und" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="NFQ-ks-efb"/>
                 <constraint firstItem="oJw-iB-tNO" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="OnI-Gd-w5j"/>
@@ -155,6 +158,8 @@
                 <constraint firstAttribute="trailing" secondItem="oJw-iB-tNO" secondAttribute="trailing" id="X1e-Iw-86Q"/>
                 <constraint firstItem="Uey-ZC-Und" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="XBf-N0-UwH"/>
                 <constraint firstAttribute="centerY" secondItem="Huh-dH-fzM" secondAttribute="centerY" id="Z5K-Us-wdN"/>
+                <constraint firstItem="ok4-YM-x4t" firstAttribute="top" secondItem="oJw-iB-tNO" secondAttribute="bottom" id="ZG5-BC-Pxs"/>
+                <constraint firstItem="ok4-YM-x4t" firstAttribute="top" secondItem="oJw-iB-tNO" secondAttribute="bottom" id="a80-S2-dby"/>
                 <constraint firstAttribute="bottom" secondItem="Huh-dH-fzM" secondAttribute="bottom" constant="285" id="aph-9S-Zux"/>
                 <constraint firstAttribute="bottom" secondItem="ok4-YM-x4t" secondAttribute="bottom" id="bMF-YM-ORP"/>
                 <constraint firstAttribute="bottom" secondItem="ok4-YM-x4t" secondAttribute="bottom" constant="10" id="f86-Sy-YyG"/>
@@ -167,6 +172,7 @@
                 <constraint firstItem="DqG-gw-3RA" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="mQS-Rg-HCZ"/>
                 <constraint firstItem="Huh-dH-fzM" firstAttribute="top" secondItem="Uey-ZC-Und" secondAttribute="bottom" constant="20" id="n4E-wM-nh1"/>
                 <constraint firstAttribute="trailing" secondItem="Huh-dH-fzM" secondAttribute="trailing" constant="277" id="oK6-LB-sTn"/>
+                <constraint firstItem="ok4-YM-x4t" firstAttribute="top" secondItem="oJw-iB-tNO" secondAttribute="bottom" id="pGV-bG-XRK"/>
                 <constraint firstItem="ok4-YM-x4t" firstAttribute="top" secondItem="oJw-iB-tNO" secondAttribute="bottom" constant="1" id="pju-0b-3d2"/>
                 <constraint firstItem="Huh-dH-fzM" firstAttribute="leading" secondItem="iFP-sP-tdg" secondAttribute="trailing" constant="130" id="sVS-Vj-aL5"/>
                 <constraint firstItem="Huh-dH-fzM" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="233" id="szX-KT-9qE"/>
@@ -198,9 +204,11 @@
                     <exclude reference="szX-KT-9qE"/>
                     <exclude reference="tM4-wR-vmc"/>
                     <exclude reference="45g-vY-2FX"/>
+                    <exclude reference="ZG5-BC-Pxs"/>
                     <exclude reference="bMF-YM-ORP"/>
                     <exclude reference="f86-Sy-YyG"/>
                     <exclude reference="hDj-FZ-XEL"/>
+                    <exclude reference="pGV-bG-XRK"/>
                     <exclude reference="pju-0b-3d2"/>
                     <exclude reference="ue8-DS-ExS"/>
                 </mask>

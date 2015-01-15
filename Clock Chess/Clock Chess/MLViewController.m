@@ -11,6 +11,7 @@
 #import <UIKit/UIKit.h>
 #import <Foundation/Foundation.h>
 #import <QuartzCore/QuartzCore.h>
+
 @interface MLViewController ()
 {
     NSArray *_timerData;
@@ -18,18 +19,15 @@
     NSInteger timeReq;
     NSInteger p1TimeReq;
     NSInteger p2TimeReq;
-    NSInteger timeReqChosen;
     NSDate *currentDate;
     NSNumber *p1ElapsedTime;
     NSNumber *p1TimeLeft;
     NSNumber *p2ElapsedTime;
     NSNumber *p2TimeLeft;
-    int startTime;
     int p1Minutes;
     int p1Seconds;
     int p2Minutes;
     int p2Seconds;
-    int firstMove;
     int mostRecentTouch;
     BOOL p1MoveYet;
     BOOL p2MoveYet;
@@ -74,7 +72,6 @@
 -(void)updateP1Timer{
     NSTimeInterval p1TimeInterval = [currentDate timeIntervalSinceDate:self.p1MoveStart];
     NSDate *p1TimerDate = [NSDate dateWithTimeIntervalSince1970:p1TimeInterval];
-    
     //Create date formatter
     NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
     [dateFormatter setDateFormat:@"mm:ss"];
@@ -90,20 +87,12 @@
     NSNumberFormatter *formatter = [[NSNumberFormatter alloc] init];
     [formatter setNumberStyle:NSNumberFormatterDecimalStyle];
     p1ElapsedTime = [formatter numberFromString:p1Timestamp];
-    //timeLeft = [NSNumber numberWithInteger:timeReq];
+    
     if(veryFirstMove == TRUE)
     {
         p1TimeLeft = [NSNumber numberWithInteger:timeReq];
         p2TimeLeft = [NSNumber numberWithInteger:timeReq];
-        p1Minutes = [p1TimeLeft intValue] / 60;
-        p1Seconds = [p1TimeLeft intValue] % 60;
-        p2Minutes = [p2TimeLeft intValue] / 60;
-        p2Seconds = [p2TimeLeft intValue] % 60;
         veryFirstMove = FALSE;
-    }
-    if(p1MoveYet == FALSE)
-    {
-        p1MoveYet = TRUE;
     }
     
     p1Minutes = [p1TimeLeft intValue] / 60;
@@ -143,10 +132,6 @@
     {
         p1TimeLeft = [NSNumber numberWithInteger:timeReq];
         p2TimeLeft = [NSNumber numberWithInteger:timeReq];
-        p1Minutes = [p1TimeLeft intValue] / 60;
-        p1Seconds = [p1TimeLeft intValue] % 60;
-        p2Minutes = [p2TimeLeft intValue] / 60;
-        p2Seconds = [p2TimeLeft intValue] % 60;
         veryFirstMove = FALSE;
     }
     
@@ -169,13 +154,20 @@
         [self.p2Timer invalidate];
         p2TimerLabel.text = @"TIME UP";
     }
-    
+}
+
+-(void)initiateTimer{
+    p1TimeLeft = [NSNumber numberWithInteger:timeReq];
+    p2TimeLeft = [NSNumber numberWithInteger:timeReq];
+    p1Minutes = [p1TimeLeft intValue] / 60;
+    p1Seconds = [p1TimeLeft intValue] % 60;
+    p2Minutes = [p2TimeLeft intValue] / 60;
+    p2Seconds = [p2TimeLeft intValue] % 60;
 }
 
 -(void)updateLabel{
     p1TimerLabel.text = [NSString stringWithFormat:@"%02d:%02d", p1Minutes, p1Seconds];
     p2TimerLabel.text = [NSString stringWithFormat:@"%02d:%02d", p2Minutes, p2Seconds];
-
 }
 
 - (NSString *) timeStamp:(NSDate *)TheCurrentDate{
@@ -192,6 +184,9 @@
 
 -(IBAction)p1Touched
 {
+    p1TimerLabel.userInteractionEnabled = NO;
+    p2TimerLabel.userInteractionEnabled = NO;
+
     if(p1MoveYet == FALSE)
     {
         NSLog(@"P1TOUCH");
@@ -200,21 +195,27 @@
                                                       selector:@selector(updateP1Timer)
                                                       userInfo:nil
                                                        repeats:YES];
+        p1MoveYet = TRUE;
+        mostRecentTouch = 1;
+        p1TimerLabel.userInteractionEnabled = YES;
     }
     else if(p1MoveYet == TRUE)
     {
+        p2TimerLabel.userInteractionEnabled = YES;
+        mostRecentTouch = 1;
         [self stopP1Timer];
         p2MoveYet = FALSE;
         [self p2Touched];
     }
-    
-    
 }
 -(IBAction)p2Touched
 {
+    p2TimerLabel.userInteractionEnabled = NO;
+    p1TimerLabel.userInteractionEnabled = NO;
+
     if(p2MoveYet == FALSE)
     {
-       
+        p2MoveYet = TRUE;
         self.p2Timer = [NSTimer scheduledTimerWithTimeInterval:1.0
                                                         target:self
                                                       selector:@selector(updateP2Timer)
@@ -224,19 +225,19 @@
         NSLog(@"%@", p1ElapsedTime);
         // timeLeft = [NSNumber numberWithFloat:([timeLeft floatValue] - [elapsedTime floatValue])];
         NSLog(@"%@", p1TimeLeft);
-        [self stopP1Timer];
+        //[self stopP1Timer];
         mostRecentTouch = 2;
+        p2TimerLabel.userInteractionEnabled = YES;
     }
-    else if(p2MoveYet == TRUE)
+    else if(p2MoveYet == TRUE && mostRecentTouch == 2)
     {
+        p1TimerLabel.userInteractionEnabled = YES;
+        mostRecentTouch = 2;
         [self stopP2Timer];
         p1MoveYet = FALSE;
         [self p1Touched];
-        
     }
-    
 }
-
 
 -(void)didReceiveMemoryWarning
 {
@@ -259,7 +260,6 @@
     return _timerData[row];
 }
 
-
 -(void)action:SEL
 {
     NSLog(@"Done Button HIT!!!");
@@ -277,9 +277,9 @@
     
     p1TimerLabel.userInteractionEnabled = YES;
     p2TimerLabel.userInteractionEnabled = YES;
+    [self initiateTimer];
     [self updateLabel];
 }
-
 
 -(instancetype)initWithNibName:(NSString *)nibNameOrNil
                         bundle:(NSBundle *)nibBundleOrNil
@@ -320,7 +320,6 @@
 -(IBAction)restartTimer:(id)sender
 {
     NSLog(@"restart timer!");
-   // timeReq = timeReqChosen;
     [self stopP1Timer];
     [self stopP2Timer];
     p1TimeLeft = [NSNumber numberWithInteger:timeReq];
